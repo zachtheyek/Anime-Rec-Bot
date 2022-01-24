@@ -9,27 +9,29 @@ def check_nan(df):
     '''
     print(f'Percentage of missing values:\n\n{round(df.isnull().sum().sort_values(ascending=False) / len(df.index) * 100, 2)}')
 
-
-def get_reccomendations(anime, num_recs=5, threshold=0.2, type=True):
+def get_recommendations(anime, num_recs=5, threshold=0.2, type=True):
     '''
     This function will take an anime title as input, and print the top animes with the highest cosine similarity value, as well as the percentage of similarity.
 
     Args:
     anime: The anime title you want to get recommendations for.
+    num_recs: The number of recommendations you want to get (default=5).
+    threshold: The threshold for the cosine similarity value (default=0.2).
+    type: If True, you'll only get recommendations of a similar type, e.g. TV, Movie, OVA, Special, etc. (default=True).
 
     Example:
-    >>>Input: recommendation('Dragon Ball Z')
+    >>>Input: get_recommendations('Dragon Ball Z')
     >>>Output: 
-       Since you watched Dragon Ball Z, we recommend:
-       
-           #1 - Dragon Ball (79.32% match)
-           #2 - Fullmetal Alchemist (42.81% match)
-           #3 - Death Note (42.6% match)
-           #4 - Code Geass: Hangyaku no Lelouch (37.64% match)
-           #5 - Yuu☆Yuu☆Hakusho (37.39% match)
+        Since you watched Dragon Ball Z, we recommend:
+        
+            #1 - Dragon Ball (79.32% match)
+            #2 - Fullmetal Alchemist (42.81% match)
+            #3 - Death Note (42.6% match)
+            #4 - Code Geass: Hangyaku no Lelouch (37.64% match)
+            #5 - Yuu☆Yuu☆Hakusho (37.39% match)
     '''
     # Read in relevant data
-    features, similarities = pd.read_csv('features.csv'), pd.read_csv('similarities.csv')
+    features, similarities = pd.read_csv('data/features.csv', low_memory=False), pd.read_csv('data/similarities.csv', low_memory=False)
     # Check if the given input is valid
     if anime in similarities:
         if type:
@@ -50,13 +52,13 @@ def get_reccomendations(anime, num_recs=5, threshold=0.2, type=True):
         scores.pop(0)
         # Print the results
         if len(titles) == 0:
-            print(f'No recommendations found for {anime} with a similarity threshold of {threshold} or greater.')
+            print(f'No recommendations found for {anime} with a similarity score of {threshold} or greater.')
         else:
             print(f'Since you watched {anime}, we recommend:\n')
             index, count = 0, 1
             while count <= num_recs:
                 if index == len(titles):
-                    print('Only found {count} recommendations.')
+                    print(f'\nNo more recommendations found.')
                     break
                 elif titles[index] in type['name'].values:
                     print(f'\t #{count} - {titles[index]} ({scores[index] * 100:.2f}% match)')
@@ -65,3 +67,8 @@ def get_reccomendations(anime, num_recs=5, threshold=0.2, type=True):
     # If input it invalid, print error message
     else:
         print('Anime title not found. Please check for typos, or perhaps try using the anime\'s original (phonetic Japanese) name.')
+
+
+if __name__ == '__main__':
+    # Function test
+    get_recommendations('Naruto')

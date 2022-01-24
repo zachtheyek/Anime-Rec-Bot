@@ -31,9 +31,11 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True):
             #5 - Yuu☆Yuu☆Hakusho (37.39% match)
     '''
     # Read in relevant data
-    features, similarities = pd.read_csv('data/features.csv', low_memory=False), pd.read_csv('data/similarities.csv', low_memory=False)
+    print('Calibrating, please wait...')
+    features, similarities = pd.read_csv('src/features.csv', low_memory=False), pd.read_csv('src/similarities.csv', low_memory=False)
     # Check if the given input is valid
     if anime in similarities:
+        print('Fetching recommendations...')
         if type:
             # Look up the type of input from feature_df (TV, Movie, OVA, etc.)
             type = features.loc[features['name'] == anime, 'type'].iloc[0]
@@ -54,7 +56,7 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True):
         if len(titles) == 0:
             print(f'No recommendations found for {anime} with a similarity score of {threshold} or greater.')
         else:
-            print(f'Since you watched {anime}, we recommend:\n')
+            print(f'Since you watched {anime}, we recommend:')
             index, count = 0, 1
             while count <= num_recs:
                 if index == len(titles):
@@ -71,4 +73,4 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True):
 
 if __name__ == '__main__':
     # Function test
-    get_recommendations('Naruto')
+    get_recommendations('Dragon Ball Z')

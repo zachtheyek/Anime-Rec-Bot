@@ -32,10 +32,11 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True):
     '''
     # Read in relevant data
     print('Calibrating, please wait...')
-    features, similarities = pd.read_csv('src/features.csv', low_memory=False), pd.read_csv('src/similarities.csv', low_memory=False)
+    similarities = pd.read_csv('src/similarities.csv', low_memory=False)
     # Check if the given input is valid
     if anime in similarities:
         print('Fetching recommendations...')
+        features = pd.read_csv('src/features.csv', low_memory=False)
         if type:
             # Look up the type of input from feature_df (TV, Movie, OVA, etc.)
             type = features.loc[features['name'] == anime, 'type'].iloc[0]

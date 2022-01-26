@@ -33,10 +33,14 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True, df_list=[])
     '''
     # Read in similarity scores
     print('Calibrating, please wait...')
-    if df_list[0].shape == (11161, 11161):
-        similarities = df_list[0]
-    elif df_list[1].shape == (11161, 11161):
-        similarities = df_list[1]
+    if df_list:
+        if df_list[0].shape == (11161, 11161):
+            similarities = df_list[0]
+        elif df_list[1].shape == (11161, 11161):
+            similarities = df_list[1]
+        else:
+            print('Error: Incorrect dataframe shape. Expecting (11161, 11161).')
+            return
     else:
         # If no dataframes are given, read in similarities from local csv file
         similarities = pd.read_csv('src/similarities.csv', low_memory=False)
@@ -44,10 +48,14 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True, df_list=[])
     if anime in similarities:
         # Read in feature references
         print('Fetching recommendations...')
-        if df_list[0].shape == (7813611, 7):
-            features = df_list[0]
-        elif df_list[1].shape == (7813611, 7):
-            features = df_list[1]
+        if df_list:
+            if df_list[0].shape == (7813611, 7):
+                features = df_list[0]
+            elif df_list[1].shape == (7813611, 7):
+                features = df_list[1]
+            else:
+                print('Error: Incorrect dataframe shape. Expecting (7813611, 7).')
+                return
         else:
             # If no dataframes are given, read in features from local csv file
             features = pd.read_csv('src/features.csv', low_memory=False)
@@ -71,7 +79,7 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True, df_list=[])
         if len(titles) == 0:
             print(f'No recommendations found for {anime} with a similarity score of {threshold} or greater.')
         else:
-            print(f'Since you watched {anime}, we recommend:')
+            print(f'Since you watched {anime}, we recommend:\n')
             index, count = 0, 1
             while count <= num_recs:
                 if index == len(titles):

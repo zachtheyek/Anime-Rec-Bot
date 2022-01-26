@@ -9,7 +9,7 @@ def check_nan(df):
     '''
     print(f'Percentage of missing values:\n\n{round(df.isnull().sum().sort_values(ascending=False) / len(df.index) * 100, 2)}')
 
-def get_recommendations(anime, num_recs=5, threshold=0.2, type=True):
+def get_recommendations(anime, num_recs=5, threshold=0.2, type=True, df_list=[]):
     '''
     This function will take an anime title as input, and print the top animes with the highest cosine similarity value, as well as the percentage of similarity.
 
@@ -18,6 +18,7 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True):
     num_recs: The number of recommendations you want to get (default=5).
     threshold: The threshold for the cosine similarity value (default=0.2).
     type: If True, you'll only get recommendations of a similar type, e.g. TV, Movie, OVA, Special, etc. (default=True).
+    df_list: The dataframes you want to use for the recommendations.
 
     Example:
     >>>Input: get_recommendations('Dragon Ball Z')
@@ -30,13 +31,26 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True):
             #4 - Code Geass: Hangyaku no Lelouch (37.64% match)
             #5 - Yuu☆Yuu☆Hakusho (37.39% match)
     '''
-    # Read in relevant data
+    # Read in similarity scores
     print('Calibrating, please wait...')
-    similarities = pd.read_csv('src/similarities.csv', low_memory=False)
+    if df_list[0].shape == (11161, 11161):
+        similarities = df_list[0]
+    elif df_list[1].shape == (11161, 11161):
+        similarities = df_list[1]
+    else:
+        # If no dataframes are given, read in similarities from local csv file
+        similarities = pd.read_csv('src/similarities.csv', low_memory=False)
     # Check if the given input is valid
     if anime in similarities:
+        # Read in feature references
         print('Fetching recommendations...')
-        features = pd.read_csv('src/features.csv', low_memory=False)
+        if df_list[0].shape == (7813611, 7):
+            features = df_list[0]
+        elif df_list[1].shape == (7813611, 7):
+            features = df_list[1]
+        else:
+            # If no dataframes are given, read in features from local csv file
+            features = pd.read_csv('src/features.csv', low_memory=False)
         if type:
             # Look up the type of input from feature_df (TV, Movie, OVA, etc.)
             type = features.loc[features['name'] == anime, 'type'].iloc[0]
@@ -74,4 +88,4 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True):
 
 if __name__ == '__main__':
     # Function test
-    get_recommendations('Dragon Ball Z')
+    get_recommendations('One Punch Man')

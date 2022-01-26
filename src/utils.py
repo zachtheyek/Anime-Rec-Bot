@@ -39,8 +39,8 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True, df_list=[])
         elif df_list[1].shape == (11161, 11161):
             similarities = df_list[1]
         else:
-            print('Error: Incorrect dataframe shape. Expecting (11161, 11161).')
-            return
+            print('Error: Incorrect dataframe shape, expecting (11161, 11161). Reading in dataframes from file...')
+            similarities = pd.read_csv('src/similarities.csv', low_memory=False)
     else:
         # If no dataframes are given, read in similarities from local csv file
         similarities = pd.read_csv('src/similarities.csv', low_memory=False)
@@ -54,8 +54,8 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True, df_list=[])
             elif df_list[1].shape == (7813611, 7):
                 features = df_list[1]
             else:
-                print('Error: Incorrect dataframe shape. Expecting (7813611, 7).')
-                return
+                print('Error: Incorrect dataframe shape, expecting (7813611, 7). Reading in dataframes from file...')
+                features = pd.read_csv('src/features.csv', low_memory=False)
         else:
             # If no dataframes are given, read in features from local csv file
             features = pd.read_csv('src/features.csv', low_memory=False)

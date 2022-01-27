@@ -40,10 +40,18 @@ def get_recommendations(anime, num_recs=5, threshold=0.2, type=True, df_list=[])
             similarities = df_list[1]
         else:
             print('Error: Incorrect dataframe shape, expecting (11161, 11161). Reading in dataframes from file...')
-            similarities = pd.read_csv('src/similarities.csv', low_memory=False)
+            try:
+                similarities = pd.read_csv('src/similarities.csv', low_memory=False)
+            except:
+                print('Error: src/similarities.csv does not exist. Please run analysis.ipynb first, or download the data directly via Google Drive (see README.md).')
+                return
     else:
         # If no dataframes are given, read in similarities from local csv file
-        similarities = pd.read_csv('src/similarities.csv', low_memory=False)
+        try:
+            similarities = pd.read_csv('src/similarities.csv', low_memory=False)
+        except:
+            print('Error: src/similarities.csv does not exist. Please run analysis.ipynb first, or download the data directly via Google Drive (see README.md).')
+            return
     # Check if the given input is valid
     if anime in similarities:
         # Read in feature references

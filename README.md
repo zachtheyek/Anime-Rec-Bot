@@ -1,14 +1,12 @@
 # Introduction
 
-Inspired by Kaggle user [Yonatan Rabinovich](kaggle.com/yonatanrabinovich)'s work, we present an anime recommendation engine that takes an anime title as input, and outputs a list of recommendations, sorted in descending order, based on their similarities to the input. Specifically, we computed the pairwise cosine similarities between the mean-normalized feature vectors for 11,161 animes available on [myanimelist.net](https://myanimelist.net/)'s catalog, as of 2021. The full analysis is detailed in `analysis.ipynb`, and the recommendation pipeline is defined as a Python function in `src/utils.py`. 
+Inspired by Kaggle user [Yonatan Rabinovich](kaggle.com/yonatanrabinovich)'s work, we present an anime recommendation engine that takes an anime title as input, and outputs a list of recommendations, sorted in descending order according to their similarities to the input. Specifically, we computed the pairwise cosine similarities between the mean-normalized feature vectors for 11,161 animes available on [myanimelist.net](https://myanimelist.net/)'s catalog, as of 2021. 
+
+The full analysis is detailed in `src/analysis.ipynb`, and the recommendation pipeline is defined as a Python function in `src/utils.py`. 
 
 # Installation
 
-To play around with the recommendation engine yourself, simply `git clone` the repository onto your local machine.
-```
-git clone https://github.com/zachtheyek/Anime-Rec-Bot.git
-```
-Then, either run `analysis.ipynb` once through, or download [`similarities.csv`](https://drive.google.com/drive/folders/1yOZsmFC75oBtUvpDXPoj7U887m1LvwZT?usp=sharing) directly through Google Drive, and place it in the `src/` directory. This additional step is required due to the file's size exceeding GitHub's 2 GB limit.
+To play around with the recommendation engine yourself, simply `git clone` the repository onto your local machine. Then, either run `src/analysis.ipynb` once through, or download [`similarities.csv`](https://drive.google.com/drive/folders/1yOZsmFC75oBtUvpDXPoj7U887m1LvwZT?usp=sharing) directly through Google Drive, and place it in the `src/` directory. This additional step is required due to the file's size exceeding GitHub's 2 GB limit.
 
 # Documentation
 
